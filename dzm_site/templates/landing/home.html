@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+  <div class="section-top">
+    <img src="{% static 'img/slider0.jpg' %}" class="img-responsive" style="width:100%">
+  </div>
+
+
+  <div class = "section section1">
+    <div class="container-fluid">
+      <h1 class="text-center" style="font-weight:100">Новые поступления</h1>
+      <div class="row">
+        {% for product_image in product_images_page %}
+          {% include 'landing/product_item.html' %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+
+  <div class="section section-delivery">
+    <div>
+      <h2>Free shipping</h2>
+    </div>
+  </div>
+
+
+  <div class = "section section2">
+      <div class="container-fluid">
+        <h1 class="text-center" style="font-weight:100">Телефоны</h1>
+        <div class="row">
+          {% for product_image in product_images_phones_page %}
+            {% include 'landing/product_item.html' %}
+          {% endfor %}
+        </div>
+      </div>
+  </div>
+
+
+  <div class = "section section3">
+      <div class="container-fluid">
+        <h1 class="text-center" style="font-weight:100">Ноутбуки</h1>
+        <div class="row">
+          {% for product_image in product_images_laptops_page %}
+            {% include 'landing/product_item.html' %}
+          {% endfor %}
+        </div>
+      </div>
+  </div>
+
+
+
+{% endblock %}

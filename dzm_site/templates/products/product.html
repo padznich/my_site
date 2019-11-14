@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                {% for item_prod in this_product.imageproduct_set.all %}
+                    <div class="product-image-item">
+                        <img src="{{ item_prod.image.url }}" class="img-responsive" style="width:100%">
+                    </div>
+
+                {% endfor %}
+            </div>
+            <div class="col-lg-6">
+                <h1 class="text-center">
+                    {{ this_product.name }}
+                </h1>
+
+                <div class="">
+                    <p>
+                        Цена: {{ this_product.price }} руб.
+                    </p>
+                </div>
+
+                <div>
+                    <nav>
+                      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="description-tab" data-toggle="tab" href="#nav-descr" role="tab" aria-controls="nav-descr" aria-selected="true">
+                            Описание
+                        </a>
+                        <a class="nav-item nav-link" id="delivery-tab" data-toggle="tab" href="#nav-delivery" role="tab" aria-controls="nav-profile" aria-selected="false">
+                            Доставка
+                        </a>
+                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">
+                            Contact
+                        </a>
+                      </div>
+                    </nav>
+                    <div class="tab-content tab-description" id="nav-tabContent">
+                      <div class="tab-pane fade show active" id="nav-descr" role="tabpanel" aria-labelledby="nav-home-tab">
+                          {{this_product.description}}
+                          <form id="form_buying_product" class="form-inline" action="{% url 'basket_adding' %}"> {% csrf_token %}
+                              <div class = "form-group">
+                                  <input type="number" class="form-control" id="number" style="margin-top:10px">
+                                  <button type="submit" id="submit_btn" class="btn btn-success btn-buy"
+                                    data-product_id="{{this_product.id}}"
+                                    data-product_name="{{this_product.name}}"
+                                    data-product_price="{{this_product.price}}"
+                                  >
+                                      Купить
+                                  </button>
+                              </div>
+                          </form>
+
+                      </div>
+                      <div class="tab-pane fade" id="nav-delivery" role="tabpanel" aria-labelledby="delivery-tab">Мы доствим Ваш товар в любую точку мира</div>
+                      <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">asdfssdsfsd</div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,7 @@
+# IDE
+.idea/
+
+# Python
+my_venv/
+*.pyc
+
