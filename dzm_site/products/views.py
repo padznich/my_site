@@ -6,9 +6,7 @@ from .models import Product
 
 def product_view(request, product_id):
 
-    print('-' * 20)
-    print(type(request), request)
-    print('-' * 20)
+    print("______products.views.py___________def product_view____________")
     this_product = Product.objects.get(id=product_id)
 
     session_key = request.session.session_key

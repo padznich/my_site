@@ -24,10 +24,14 @@
       </li>
       <li class="nav-item navlink-right">
         <div class="basket-container">
-          <a class="nav-link" href="#">Корзина<span id="basket_total_count"></span></a>
+          <a class="nav-link" href="#">Корзина<span id="basket_total_count">({{count_in_basket}})</span></a>
           <div class="basket-item hidden">
             <ul class="">
-
+              {% for product_in_basket in products_in_basket %}
+                <li id="{{product_in_basket.product.id}}">
+                  {{product_in_basket.product.name }} x {{product_in_basket.count}} шт. по {{product_in_basket.price_per_item}} руб.
+                </li>
+              {% endfor %}
             </ul>
           </div>
         </div>

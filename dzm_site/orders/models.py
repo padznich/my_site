@@ -96,9 +96,10 @@ class ProductInBasket(models.Model):
         verbose_name = 'Товар в корзине'
         verbose_name_plural = 'Товары в корзине'
 
-
-
-
+    def save(self, *args, **kwargs):
+        self.price_per_item = self.product.price
+        self.total_price = int(self.count) * self.price_per_item
+        super(ProductInBasket, self).save(*args, **kwargs)
 
 
 

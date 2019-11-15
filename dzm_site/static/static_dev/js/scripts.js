@@ -28,11 +28,28 @@ $ (document).ready(function(){
             type: 'POST',
             data: data_prod,
             cache: true,
-            success: function(data_prod){
+            success: function(data_response){
                 console.log("OK")
-                console.log(data_prod.products_total_count)
-                if (data_prod.products_total_count){
-                    $('#basket_total_count').text("("+data_prod.products_total_count+")")
+                console.log(data_response.products_in_basket_count)
+                if (data_response.products_in_basket_count){
+                    $('#basket_total_count').text("("+data_response.products_in_basket_count+")")
+                    console.log(data_prod)
+                    console.log(data_response)
+
+
+                    if (data_response.was_created){
+                        $('.basket-item ul').append('<li id="'+product_id+'">' +
+                        product_name + ' x ' + nmb +
+                        ' шт. '+ product_price+'   руб.'+
+                //        '<a class="delete-item" href="">x</a>'+
+                        ' </li>')
+                    } else {
+                        console.log('in else')
+                        $('#'+product_id).text(product_name + ' x ' + data_response.prod_id_count +
+                        ' шт. '+ product_price+'   руб.')
+
+                    }
+
                 }
             },
 
@@ -43,10 +60,6 @@ $ (document).ready(function(){
 
         })
 
-
-        $('.basket-item ul').append('<li>' + product_name + ' x ' + nmb +' шт. '+ product_price+'   руб.' +
-        '<a class="delete-item" href="">x</a>'+
-        ' </li>')
 
     });
 
