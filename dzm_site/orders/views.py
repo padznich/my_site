@@ -48,4 +48,12 @@ def basket_adding(request):
 
 
 def checkout(request):
+    print("___________________checkout view")
+    session_key = request.session.session_key
+    products_in_basket = ProductInBasket.objects.filter(session_key=session_key, is_active=True)
+    total_amount_order = 0
+    for product_in_basket in products_in_basket:
+        total_amount_order+= product_in_basket.total_price
+
+
     return render(request, 'orders/checkout.html', locals())

@@ -1,13 +1,19 @@
+import os
 from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import Subscriber_form
 from .models import Subscriber
 from products.models import ImageProduct
 
+
 def first_view(request):
     return HttpResponse('это сайт сержа')
 
 def start_html(request):
+    BD = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    print('base dir')
+    print(BD)
+
     print(request.method)
     form = Subscriber_form(request.POST or None)
     data_users = list(Subscriber.objects.values('email'))
@@ -27,6 +33,7 @@ def start_html(request):
         print(f'form.cleaned_data["name"]:\n{form.cleaned_data["name"]}')
         print(type(form.cleaned_data))
         new_form = form.save()
+
     return render(request, 'landing/start_page.html', locals())
 
 

@@ -95,19 +95,19 @@ $ (document).ready(function(){
     $('.basket-container').on('click', function(e){
         e.preventDefault();
         showingBasket()
-    })
+    });
 
 
 
     $('.basket-container').mouseover(function(){
         showingBasket()
-    })
+    });
 
 
     $('.basket-container').mouseout(function(){
 //        $('.basket-item').addClass('hidden')
         showingBasket()
-    })
+    });
 
     $(document).on('click', '.delete-item', function(e){
         e.preventDefault();
@@ -117,7 +117,28 @@ $ (document).ready(function(){
 
 //        $(this).closest('li').remove();
 
-    })
+    });
+    function total_amount_in_order(){
+        var total_money = 0;
+        $('.product-total-amount').each(function(){
+            total_money += parseFloat($(this).text())
+            console.log('in each')
+        });
+        console.log('total_am: '+total_money)
+        $('#total-order-amount').text(total_money.toFixed(2)+' руб.');
+    }
 
+    $(document).on('change', '.product_num_in_basket', function(){
+        var new_prod_num = $(this).val();
+        current_tr=$(this).closest('tr');
+        current_price=parseFloat(current_tr.find('.product-price').text()).toFixed(2);
+        console.log("cur_price: "+current_price);
+        current_total_amount = parseFloat(new_prod_num*current_price).toFixed(2);
+        console.log("cur_total_amount: "+current_total_amount);
+        current_tr.find('.product-total-amount').text(current_total_amount)
+        total_amount_in_order();
+    });
+
+    total_amount_in_order();
 
 })
