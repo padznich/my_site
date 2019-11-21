@@ -6,7 +6,7 @@ def basket_items(request):
     if not session_key:
         request.session.cycle_key()
 
-    products_in_basket = ProductInBasket.objects.filter(session_key=session_key, is_active=True)
+    products_in_basket = ProductInBasket.objects.filter(session_key=session_key, is_active=True, num_order__isnull=True)
     total_count_items_in_basket = 0
     for item_in_basket in products_in_basket:
         total_count_items_in_basket += item_in_basket.count

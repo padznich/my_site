@@ -4,51 +4,71 @@
 {% block content %}
     <div class="container-fluid" style="margin-top:20px">
         <div class="row">
-            <div class="col-lg-6 offset-lg-3">
-                <h3 class="text-center">Товары в корзине</h3>
-                <h5 class="text-center">Общая стоимость: {{total_amount_order}} руб.</h5>
-                <form class="">
-                    <table class="table text-center" style="margin-top:20px">
-                        <thead>
-                            <tr>
-                                <th>Название товара</th>
-                                <th>Количество</th>
-                                <th>Цена за ед.</th>
-                                <th>Общая цена</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for prod in products_in_basket %}
+            {% if products_in_basket %}
+                <div class="col-lg-6 offset-lg-3">
+                    <h3 class="text-center">Товары в корзине</h3>
+                    <h5 class="text-center">Общая стоимость: <span id="total_sum_span">{{total_amount_order}}</span> руб.</h5>
+    <!--                {{ form.errors }} # показывает ошибки для полей-->
+                    <form class="form-horizontal" method="post">{% csrf_token %}
+                        <div class="form-group">
+                            <div class="col-lg-4">
+                                <label>Имя</label>
+                                <span class="form-error">{{ form.cl_name.errors }}</span>
+                                <input type="text" name="{{form.cl_name.html_name}}" class="form-control"
+                                    value="{{ request.POST.cl_name }}">
+                            </div>
+                            <div class="col-lg-4">
+                                <label>Телефон</label>
+                                <span class="form-error">{{ form.cl_phone.errors }}</span>
+                                <input type="text" name="{{form.cl_phone.html_name}}" class="form-control"
+                                    value="{{ request.POST.cl_phone }}">
+                            </div>
+                        </div>
+
+                        <table class="table text-center" style="margin-top:20px">
+                            <thead>
                                 <tr>
-                                    <td class="text-left">
-                                        {{prod.product.name}}
-                                    </td>
-                                    <td>
-                                        <input value="{{prod.count}}" type="number"
-                                        class="product_num_in_basket">
-                                    </td>
-                                    <td>
-                                        <span class="product-price">
-                                            {{prod.price_per_item}}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="product-total-amount">
-                                            {{prod.total_price}}
-                                        </span>
-                                    </td>
+                                    <th>Название товара</th>
+                                    <th>Количество</th>
+                                    <th>Цена за ед.</th>
+                                    <th>Общая цена</th>
                                 </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    <div class="text-right" style="margin-top:-50px">
-                        <b>Сумма заказа: </b> <span id="total-order-amount">XXX</span>
-                    </div>
-                    <div class="text-right" style="margin-top:10px;">
-                        <button type="submit" class="btn btn-primary btn-lg">Заказать</button>
-                    </div>
-                </form>
-            </div>
+                            </thead>
+                            <tbody>
+                                {% for prod in products_in_basket %}
+                                    <tr>
+                                        <td class="text-left">
+                                            {{prod.product.name}}
+                                        </td>
+                                        <td>
+                                            <input value="{{prod.count}}" type="number"
+                                                   class="product_num_in_basket" name="product_in_basket_{{ prod.id }}">
+                                        </td>
+                                        <td>
+                                            <span class="product-price">
+                                                {{prod.price_per_item}}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="product-total-amount">
+                                                {{prod.total_price}}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="text-right" style="margin-top:-40px">
+                            <b>Сумма заказа: </b> <span id="total-order-amount">XXX</span>
+                        </div>
+                        <div class="text-right" style="margin-top:10px; padding-bottom:20px">
+                            <button type="submit" class="btn btn-primary btn-lg">Заказать</button>
+                        </div>
+                    </form>
+                </div>
+            {% else %}
+                <h3 class="text-center">У Вас нет товаров в корзине</h3>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from .models import ProductInBasket
-
+from .models import Order, ProductInOrder, ProductInBasket
+from .forms import CheckoutContactForm
+from django.contrib.auth.models import User
 
 # Create your views here.
 def basket_adding(request):
@@ -50,10 +51,37 @@ def basket_adding(request):
 def checkout(request):
     print("___________________checkout view")
     session_key = request.session.session_key
-    products_in_basket = ProductInBasket.objects.filter(session_key=session_key, is_active=True)
+    products_in_basket = ProductInBasket.objects.filter(session_key=session_key, is_active=True, num_order__isnull=True)
     total_amount_order = 0
     for product_in_basket in products_in_basket:
         total_amount_order+= product_in_basket.total_price
-
+    form = CheckoutContactForm(request.POST or None)
+    if request.POST:
+        data = request.POST
+        print(data)
+        if form.is_valid():
+            print("form is valid")
+            name = data.get('cl_name', 'name if not data')
+            phone = data['cl_phone']
+            user, created = User.objects.get_or_create(username=phone, defaults={"first_name": name})
+            order = Order.objects.create(user=user, customer_name=name, customer_phone=phone, status_id=1)
+            for name, value in data.items():
+                if name.startswith('product_in_basket_'):
+                    pr_in_bask_id = name.split('product_in_basket_')[1]
+                    prods_basket = ProductInBasket.objects.get(id=pr_in_bask_id)
+                    prods_basket.count = value
+                    prods_basket.num_order=order
+                    prods_basket.save(force_update=True)
+                    try:
+                        ProductInOrder.objects.create(product=prods_basket.product, count=prods_basket.count,
+                                                  price_per_item=prods_basket.price_per_item, total_price=prods_basket.total_price,
+                                                  num_order=order)
+                    except:
+                        print('Произошел сбой')
+                    else:
+                        ProductInBasket.objects.filter(num_order=order).delete() # после добавление в ордер очищаем корзину
+                        print('Заказ успешно обработан')
+        else:
+            print('form is not valid')
 
     return render(request, 'orders/checkout.html', locals())

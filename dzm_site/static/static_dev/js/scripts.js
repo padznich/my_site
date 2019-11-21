@@ -126,6 +126,8 @@ $ (document).ready(function(){
         });
         console.log('total_am: '+total_money)
         $('#total-order-amount').text(total_money.toFixed(2)+' руб.');
+        $('#total_sum_span').text(total_money.toFixed(2));
+
     }
 
     $(document).on('change', '.product_num_in_basket', function(){
