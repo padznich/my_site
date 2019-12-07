@@ -1,13 +1,19 @@
-from urllib import request
 import json
+from urllib import request
 
-web_url= request.urlopen('http://www.nbrb.by/api/exrates/currencies')
-data = web_url.read()
-data = data.decode()
-data_structure = json.loads(data)
+from django.test import TestCas
 
-print(data_structure[0]['Cur_ID'])
-print(type(data_structure))
-print(len(data_structure))
-print(data_structure[0])
-print(type(data_structure[0]))
+
+class CurrenciesAPITestCase(TestCase):
+  
+    def setUp(self):
+        self.url = 'http://www.nbrb.by/api/exrates/currencies'
+
+    def test_currencies_api_structure(self):
+        """Test Currencies API data structure"""
+        req = request.urlopen(self.url)
+        resp = req.read().decode()
+        resp_json = json.loads(resp)
+        
+        # TODO: Implement checks
+        # self.assertIsInstance(resp_json, dict)
